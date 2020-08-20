@@ -1,53 +1,106 @@
+import React, {useState} from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import {useAuth} from '../lib/auth'
+import {useForm} from 'react-hook-form'
+import { ButtonGroup, Button, Box, Collapse, Divider, Flex, Input, Stack, Text } from '@chakra-ui/core'
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
+
+const Home = () => {
+  const auth = useAuth();
+
+  const { errors, register, handleSubmit, watch } = useForm();
+  const onSubmit = (data, e) => {
+    if(signupvisible){
+      auth.signup(data.email, data.password)
+    } else {
+      auth.signin(data.email, data.password)
+    }
+
+  }
+
+  const [signupvisible, setSignupvisible] = useState(false);
+
+  const watchPass = watch("password");
+  const watchConfirm = watch("confirmpassword");
+
+  return <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>CoNotes</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+          <Box bg="grey-100" px={70} py={50} border="1px" rounded="lg" overflow="hidden">
+          <center>
+            <Text fontSize="4xl" mb={5}><b>Co</b>Notes</Text>
+            <ButtonGroup spacing={4} mb={4}>
+              <Flex>
+                <Button variantColor="teal" variant={signupvisible ? "ghost" : "solid"} onClick={(e) => setSignupvisible(false)}>
+                  SignIn
+                </Button>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+                <Divider orientation="vertical" />
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+                <Button variantColor="teal" variant={signupvisible ? "solid" : "ghost"} onClick={(e) => setSignupvisible(true)}>
+                  SignUp
+                </Button>
+              </Flex>
+            </ButtonGroup>
+          </center>
+            
+            <Stack spacing={4}>
+              <Input 
+                name="email" 
+                placeholder="Email"
+                ref={register ({ 
+                  required: true, 
+                  pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                })}
+                isInvalid={errors.email ? true : false}
+                errorBorderColor="red.300"
+              />
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+              <Input 
+                name="password"
+                placeholder="Password" 
+                type="password"
+                ref={register ({
+                  required: true, 
+                  minLength: 6
+                  })}
+                isInvalid={errors.password ? true : false}
+                errorBorderColor="red.300"
+              />
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+              <Collapse isOpen={signupvisible}>
+                <Input 
+                  name="confirmpassword"
+                  placeholder="Confirm Password" 
+                  type="password"
+                  ref={register ({
+                    required: true, 
+                    minLength: 6
+                    })}
+                  isInvalid={watchPass != watchConfirm}
+                  errorBorderColor="red.300"
+                />
+              </Collapse>
+
+              {signupvisible ? 
+                <Button id="signup" variantColor="teal" size="md" type="submit">
+                  Sign Up
+                </Button>
+
+                :<Button id="signin" type="submit">
+                  Sign In
+                </Button>
+              }
+            </Stack>
+          </Box>
+        </form>
       </main>
 
       <footer className={styles.footer}>
@@ -61,5 +114,6 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  )
 }
+
+export default Home
