@@ -6,8 +6,6 @@ import { Box, Button, Flex, Heading, ButtonGroup, Divider, Text } from '@chakra-
 const Menu = ({children}) => {
   const auth = useAuth();
 
-  const [test, setTest] = useState(true);
-
   return <Flex direction="column" >
     <Flex justify="space-between" p={2}>
       <Box display="flex" direction="column" >
@@ -19,7 +17,6 @@ const Menu = ({children}) => {
       </Box>
       
       <Box>
-        <Text>{auth.user.email}</Text>
         <Button onClick={() => auth.signout()}>Sign Out</Button>
       </Box>
     </Flex>
