@@ -34,9 +34,9 @@ const Authentication = () => {
 
       <main className={styles.main}>
         <form onSubmit={handleSubmit(onSubmit)}>
-
-          <Box px={70} py={50} border="1px" borderColor="grey.200" rounded="lg" overflow="hidden">
-          <center>
+          
+          <Box px={70} py={50} borderWidth="1px" borderColor="#CBD5E0" rounded="lg" overflow="hidden">
+          <Flex direction="column" align="center" justify="center">
             <Text fontSize="4xl" mb={5}><b>Co</b>Notes</Text>
             <ButtonGroup spacing={4} mb={4}>
               <Flex>
@@ -51,7 +51,6 @@ const Authentication = () => {
                 </Button>
               </Flex>
             </ButtonGroup>
-          </center>
             
             <Stack spacing={4}>
               <Input 
@@ -90,22 +89,27 @@ const Authentication = () => {
                   errorBorderColor="red.300"
                 />
               </Collapse>
+              <Flex align="center" justify="center" >
+                {issubmiting ?
+                  <Spinner />
+                  :signupvisible ? 
+                    <Button id="signup" variantColor="teal" size="md" type="submit">
+                      Sign Up
+                    </Button>
+    
+                    :<Button id="signin" type="submit">
+                      Sign In
+                    </Button>
+                  
+                }
+              </Flex>
 
-              {issubmiting ?
-                <Spinner />
-                :signupvisible ? 
-                  <Button id="signup" variantColor="teal" size="md" type="submit">
-                    Sign Up
-                  </Button>
-  
-                  :<Button id="signin" type="submit">
-                    Sign In
-                  </Button>
-                
-              }
+              
               
             </Stack>
+            </Flex>
           </Box>
+          
         </form>
       </main>
     </div>

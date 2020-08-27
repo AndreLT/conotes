@@ -1,17 +1,18 @@
 import React from 'react'
-import { Button, Text } from '@chakra-ui/core'
-import Authentication from '../components/authentication'
+import useSWR from 'swr'
+
 import {useAuth} from '../lib/auth'
+import Authentication from '../components/authentication'
+import Menu from '../components/menu'
+import UserNotes from './usernotes'
+
 
 const Home = () => {
   const auth = useAuth();
 
   return <div>
     {auth.user ?
-      <div>
-        <Text fontSize="3xl">{auth.user.email}</Text>
-        <Button onClick={() => auth.signout()}>Sign out</Button>
-      </div>
+      <UserNotes />
       :
       <Authentication />
     }
