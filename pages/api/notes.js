@@ -1,12 +1,13 @@
-import db from '../../lib/firebase-admin'
+import { auth } from '../../lib/firebase-admin'
 
-export default async (_, res) => {
-  const snapshot = await db.collection('notes').get();
-  const notes = [];
+import {getUserNotes} from '../../lib/firestore-admin'
 
-  snapshot.forEach((doc) => {
-    notes.push({ id: doc.id, ...doc.data() });
-  });
+export default async (req, res) => {
+  const user = await auth.verifyIdToken(req.headers.token);
+  const {notes, error} = await getUserNotes(user.uid);
+  if(error){
+    res.status(500).json({error});
+  }
 
   res.status(200).json({notes});
 }

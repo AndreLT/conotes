@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {Box, Button, Input, Stack, Text, Textarea, Flex } from '@chakra-ui/core'
+import { useForm } from 'react-hook-form'
 
 import {createNote} from '../lib/firestore'
 import Renderednote from '../components/renderednote'
@@ -7,6 +8,16 @@ import {useAuth} from '../lib/auth'
 import Menu from '../components/menu'
 
 const NewNote = () => {
+
+  const { handleSubmit, register, errors } = useForm();
+  const onSubmit = values => {
+    let data = {
+      userId: auth.user.uid,
+      createdAt: new Date().toISOString(),
+      ...data
+    }
+    console.log(data)
+  }
 
   const [title, setTitle] = useState("")
   const [cues, setCues] = useState("")
@@ -18,13 +29,15 @@ const NewNote = () => {
 
   const pushNote = () => {
     let data = {
+      userId: auth.user.uid,
+      createdAt: new Date().toISOString(),
       title: title,
       cues: cues,
       notes: notes, 
       summary: summary
     }
 
-    createNote(auth.user.uid, data)
+    createNote(data)
     .then(console.log("added note to db"))
     .catch(function(error) {console.log(error)})
   }
@@ -45,6 +58,8 @@ const NewNote = () => {
               <Text>Cues</Text>
               <Textarea 
                 value={cues}
+                resize="none"
+                rows="20"
                 onChange={(e) => setCues(e.target.value)}
               />
             </Flex>
@@ -52,6 +67,9 @@ const NewNote = () => {
               <Text>Notes</Text>
               <Textarea
                 value={notes}
+                resize="none"
+                rows="20"
+                minH="300px"
                 onChange={(e) => setNotes(e.target.value)}
               />
             </Flex>

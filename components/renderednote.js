@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Heading, Divider, Text, Stack} from '@chakra-ui/core'
+import { Box, Flex, Heading, List, ListItem, Divider, Text, Stack} from '@chakra-ui/core'
 
 const Renderednote = (props) => {
     return <Box borderWidth="1px" borderColor="grey.400" p={5}>
@@ -10,9 +10,11 @@ const Renderednote = (props) => {
         <Flex direction="column" w="70%">
           <Text fontSize="3xl">Cues</Text>
           <Divider />
-          <Text white-space="pre-line">
-            {props.cues}
-          </Text>
+          <List styleType="disc">
+            {props.cues.split('\n').map((cue) => (
+              <ListItem>{cue}</ListItem>
+            ))}
+          </List>
         </Flex>
         <Divider orientation="vertical" />
         <Flex direction="column" w="100%">
