@@ -10,9 +10,12 @@ import {
     IconButton,
     useDisclosure,
     Button, 
-    Text
+    Text,
+    PseudoBox,
+    Flex
   } from "@chakra-ui/core";
 import {HiOutlineMenu} from 'react-icons/hi'
+import Link from 'next/link';
 
 const MenuDrawer = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,29 +26,47 @@ const MenuDrawer = () => {
         <IconButton 
             ref={btnRef} 
             icon={HiOutlineMenu}
-            variantColor="blue"
             onClick={onOpen}
+            fontSize="30px"
+            variant="ghost"
         />
         <Drawer
           isOpen={isOpen}
           placement="right"
           onClose={onClose}
           finalFocusRef={btnRef}
+          size="300px"
         >
           <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>Create your account</DrawerHeader>
-  
+            <DrawerCloseButton size={6} m={2} />
             <DrawerBody>
-                <Text>MENU HERE</Text>
+              <Flex flexDirection="column" mt={10}>
+                <Link href="/usernotes" passHref>
+                  <PseudoBox
+                  as="button"
+                  cursor="pointer"
+                  fontWeight="semibold"
+                  py={4}
+                  bg="white"
+                  >
+                      Your Notes
+                  </PseudoBox>
+                </Link>
+                <Link href="/newnote" passHref>
+                  <PseudoBox
+                    as="button"
+                    cursor="pointer"
+                    fontWeight="semibold"
+                    py={4}
+                    bg="#deebff"
+                    _hover={{ bg: "#adceff" }}
+                    >
+                    + New Note
+                  </PseudoBox>
+                </Link>
+              </Flex>
             </DrawerBody>
   
-            <DrawerFooter>
-              <Button variant="outline" mr={3} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button color="blue">Save</Button>
-            </DrawerFooter>
           </DrawerContent>
         </Drawer>
       </>

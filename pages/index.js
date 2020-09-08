@@ -9,7 +9,7 @@ import UserNotes from './usernotes'
 
 const Home = () => {
   const auth = useAuth();
-
+  
   return <div>
     {auth.user ?
       <UserNotes />

@@ -61,7 +61,7 @@ const Menu = ({children}) => {
         }
     </Flex>
     <Flex justify="center">
-      <Box w="70%" mt={4}>
+      <Box w={["100%", "90%" ,"80%","70%", "60%"]} mt={4}>
         {children}
       </Box>
     </Flex>

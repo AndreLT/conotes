@@ -9,8 +9,8 @@ import NotesGrid from '../components/notesgrid';
 
 const UserNotes = () => {
     const { user }  = useAuth();
-    const { data } = useSWR( user ? ['/api/notes', user.token] : null, fetcher)
-    
+    const {data} = useSWR( user ? ['/api/notes', user.token] : null, fetcher)
+
     if(!data){
         return(
             <Menu>
@@ -21,7 +21,7 @@ const UserNotes = () => {
 
     return (
         <Menu>
-            {data.notes?
+            {data?
                 <NotesGrid notes={data.notes}/>
                 :
                 <Text>You dont have any notes yet!</Text>

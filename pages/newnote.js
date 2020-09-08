@@ -60,7 +60,9 @@ const NewNote = () => {
                 value={cues}
                 resize="none"
                 rows="20"
+                minH="300px"
                 onChange={(e) => setCues(e.target.value)}
+                fontSize={["12px", "16px"]}
               />
             </Flex>
             <Flex direction="column" w="100%">
@@ -90,12 +92,3 @@ const NewNote = () => {
 }
 
 export default NewNote;
-
-const formattedData = (title,cues,notes,summary) => {
-  return {
-    title: title,
-    cues: cues,
-    notes: notes,
-    summary: summary
-  }
-}

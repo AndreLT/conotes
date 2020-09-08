@@ -15,7 +15,12 @@ const Note = () => {
   const auth = useAuth();
 
   const pushNote = () => {
-    let data = formattedData(title,cues,notes,summary);
+    let data = {
+      title: title,
+      cues: cues,
+      notes: notes, 
+      summary: summary
+    }
 
     createNote(auth.user.uid, data)
     .then(console.log("added note to db"))
