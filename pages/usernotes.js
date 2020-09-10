@@ -1,6 +1,7 @@
 import React from 'react';
 import useSWR from 'swr';
-import { Box, Spinner, Text, Heading } from '@chakra-ui/core';
+import { Flex,  Spinner, Text, Heading, PseudoBox } from '@chakra-ui/core';
+import Link from 'next/link'
 
 import fetcher from '../utils/fetcher';
 import Menu from '../components/menu';
@@ -21,10 +22,30 @@ const UserNotes = () => {
 
     return (
         <Menu>
-            {data?
+            {data.notes.length ?
                 <NotesGrid notes={data.notes}/>
                 :
-                <Text>You dont have any notes yet!</Text>
+                <Flex direction='column' padding={10} boxShadow="2px 2px 4px #888888" align='center'>
+                    <Text fontSize="2xl" fontWeight='bold'>You dont have any notes yet :'(</Text>
+                    <Text fontSize="xl">Lets change that!</Text>
+                    <Link href="/newnote" passHref>
+                      <PseudoBox
+                        as="button"
+                        cursor="pointer"
+                        fontWeight="semibold"
+                        borderRadius={6}
+                        color="white"
+                        w="20%"
+                        px={3}
+                        py={4}
+                        mt={5}
+                        bg="#1062de"
+                        _hover={{ bg: "#adceff" }}
+                      >
+                        Create your first note
+                      </PseudoBox>
+                    </Link>
+                </Flex>
             }
         </Menu>
     )

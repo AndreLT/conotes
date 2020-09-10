@@ -15,9 +15,9 @@ const Authentication = () => {
   const onSubmit = (data, e) => {
     setIssubmiting(true)
     if(signupvisible){
-        auth.signup(data.email, data.password)
+      auth.signup(data.email, data.password, data.nickname,)
     } else {
-        auth.signin(data.email, data.password)
+      auth.signin(data.email, data.password)
     }
   }
 
@@ -88,23 +88,28 @@ const Authentication = () => {
                   isInvalid={watchPass != watchConfirm}
                   errorBorderColor="red.300"
                 />
+                <Input 
+                  name="nickname" 
+                  placeholder="Display Name"
+                  ref={register ({ 
+                    required: signupvisible, 
+                    minLength: 4
+                  })}
+                  isInvalid={errors.nickname ? true : false}
+                  errorBorderColor="red.300"
+                />
               </Collapse>
               <Flex align="center" justify="center" >
-                {issubmiting ?
-                  <Spinner />
-                  :signupvisible ? 
-                    <Button id="signup" variantColor="teal" size="md" type="submit">
-                      Sign Up
-                    </Button>
-    
-                    :<Button id="signin" type="submit">
-                      Sign In
-                    </Button>
-                  
+                {signupvisible ? 
+                  <Button id="signup" variantColor="teal" size="md" type="submit" isLoading={issubmiting}>
+                    Sign Up
+                  </Button>
+  
+                  :<Button id="signin" type="submit" isLoading={issubmiting}>
+                    Sign In
+                  </Button>
                 }
               </Flex>
-
-              
               
             </Stack>
             </Flex>

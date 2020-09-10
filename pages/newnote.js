@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Box, Button, Input, Stack, Text, Textarea, Flex } from '@chakra-ui/core'
+import {Box, Button, Checkbox, Input, Stack, Text, Textarea, Flex } from '@chakra-ui/core'
 import { useForm } from 'react-hook-form'
 
 import {createNote} from '../lib/firestore'
@@ -25,6 +25,8 @@ const NewNote = () => {
   const [summary, setSummary] = useState("")
   const [rendered, setRendered] = useState(false)
 
+  const [ischecked, setIschecked] = useState(true)
+
   const auth = useAuth();
 
   const pushNote = () => {
@@ -48,7 +50,10 @@ const NewNote = () => {
       {rendered ?
         <Renderednote title={title} cues={cues} notes={notes} summary={summary} />
         :<Box>
-          <Text >Note Title</Text>
+          <Flex direction='row' justify='space-between'>
+            <Text>Note Title</Text>
+            <Checkbox isChecked={ischecked} onChange={() => setIschecked(!ischecked)}>sign as {auth?.user?.displayName}</Checkbox>
+          </Flex>
           <Input 
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -85,8 +90,10 @@ const NewNote = () => {
       }
       
     </Box>
-    <Button onClick={() => setRendered(true)}>Render</Button>
-    <Button onClick={() => pushNote()}>Save Note</Button>
+    <Stack mt={2}isInline>
+      <Button onClick={() => setRendered(true)}>Render</Button>
+      <Button onClick={() => pushNote()}>Save Note</Button>
+    </Stack>
   </Flex>
 </Menu>
 }

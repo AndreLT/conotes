@@ -22,7 +22,7 @@ const NotePage = () => {
     }
     console.log(note)
     return <Menu>
-            <Renderednote title={note.title} cues={note.cues} notes={note.notes} summary={note.summary} date={format(parseISO(note.createdAt), 'kk:mm - dd MMM yyyy')}/>
+            <Renderednote title={note.title} cues={note.cues} notes={note.notes} summary={note.summary} date={format(parseISO(note.createdAt), 'MMMM dd yyyy')}/>
         </Menu>
 
 }

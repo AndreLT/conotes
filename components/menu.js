@@ -8,6 +8,8 @@ import MenuDrawer from './menudrawer'
 
 const Menu = ({children}) => {
   const auth = useAuth();
+  const user = auth.user;
+  console.log(user)
 
   const windowsize = useWindowsize();
   return (
@@ -54,9 +56,10 @@ const Menu = ({children}) => {
             </Link>
           </Box>
       
-          <Box>
+          <Flex direction='row' align='center'>
+            <Text>Signed in as {auth?.user?.displayName}</Text>
             <Button onClick={() => auth.signout()} m={2}>Sign Out</Button>
-          </Box>
+          </Flex>
         </Flex>
         }
     </Flex>
