@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
-import { Flex,  Spinner, Text, ButtonStack, Button, PseudoBox } from '@chakra-ui/core';
+import { Flex,  Spinner, Text, ButtonGroup, Button, PseudoBox } from '@chakra-ui/core';
 import Link from 'next/link'
 
 import fetcher from '../utils/fetcher';
@@ -28,10 +28,10 @@ const UserNotes = () => {
             {data.notes.length ?
                 <Flex direction='column'>
                   <NotesGrid notes={data.notes}/>
-                  <ButtonStack>
+                  <ButtonGroup>
                     <Button onClick={() => setPageIndex(pageIndex - 1)}>Previous</Button>
                     <Button onClick={() => setPageIndex(pageIndex + 1)}>Next</Button>
-                  </ButtonStack>
+                  </ButtonGroup>
                 </Flex>
                 :
                 <Flex direction='column' padding={10} boxShadow="2px 2px 6px #cccccc" align='center'>
