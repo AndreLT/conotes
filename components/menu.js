@@ -9,7 +9,6 @@ import MenuDrawer from './menudrawer'
 const Menu = ({children}) => {
   const auth = useAuth();
   const user = auth.user;
-  console.log(user)
 
   const windowsize = useWindowsize();
   return (

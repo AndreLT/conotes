@@ -28,6 +28,7 @@ const Renderednote = (props) => {
             notes = {props.notes}
             summary = {props.summary}
             date = {props.date}
+            autho = {props.author}
             />
         </PDFViewer>  
         <Button onClick={() => setPreview(false)}>Close</Button>
@@ -36,7 +37,7 @@ const Renderednote = (props) => {
   }
   return (
     <>
-      <Flex direction="column" align="center" justify="center" borderWidth="1px" borderColor="grey.400" p={5} w="full">
+      <Flex direction="column" align="center" justify="center" p={5} w="full">
         <Heading mb={5}>{props.title}</Heading>
 
         <Stack w="95%" minH="500px" isInline>
@@ -44,8 +45,8 @@ const Renderednote = (props) => {
             <Text fontSize="3xl">Cues</Text>
             <Divider />
             <List styleType="disc" fontSize={["14px","16px","18px", "20px"]} p={2}>
-              {props.cues.trim().split('\n').map((cue) => (
-                <ListItem>{cue}</ListItem>
+              {props.cues.trim().split('\n').map((cue, key) => (
+                <ListItem key={key}>{cue}</ListItem>
                 ))}
             </List>
           </Flex>
@@ -66,11 +67,12 @@ const Renderednote = (props) => {
 
         <PDFDownloadLink document={
           <PdfGen 
-          title = {props.title}
-          cues = {props.cues}
-          notes = {props.notes}
-          summary = {props.summary}
-          date = {props.date}
+            title = {props.title}
+            cues = {props.cues}
+            notes = {props.notes}
+            summary = {props.summary}
+            date = {props.date}
+            author = {props.author}
           />} fileName={`${props.title.replace(/[\W]/g,'')}.pdf`}>
           {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
         </PDFDownloadLink>

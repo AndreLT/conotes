@@ -21,13 +21,13 @@ const PdfGen = (props) => {
 				</View>
         <View style={{display: 'flex', justifyContent:'space-between', flexDirection:'row', width: '90%', marginBottom: 2}}>
           <Text style={{fontSize:10}}>{props.date}</Text>
-          <Text style={{fontSize:10}}>User Name</Text>
+          <Text style={{fontSize:10}}>{props.author}</Text>
         </View>
 				<View style={styles.middle}>
 					<View style={styles.left}>
 						<Text style={styles.sectionTitle}>Cues</Text>
-						{props.cues.trim().split('\n').map((cue) => (
-              <Text style={{fontSize: 12}}>&#8226; {cue}</Text>
+						{props.cues.trim().split('\n').map((cue, key) => (
+              <Text style={{fontSize: 12}} key={key}>&#8226; {cue}</Text>
             ))}
 					</View>
 					<View style={styles.right}>

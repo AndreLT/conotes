@@ -5,7 +5,7 @@ import {getUserNotes} from '../../lib/firestore-admin'
 export default async (req, res) => {
   try{
     const user = await auth.verifyIdToken(req.headers.token);
-    const {notes} = await getUserNotes(user.uid);
+    const {notes} = await getUserNotes(user.uid, req);
 
     res.status(200).json({notes});
   }catch(error){
