@@ -1,13 +1,13 @@
 import React from 'react'
-import { Box, Text, Flex, Icon, Link, PseudoBox} from '@chakra-ui/core'
+import { Box, Text, Flex, SimpleGrid, Icon, Link, PseudoBox} from '@chakra-ui/core'
 import { format, parseISO } from 'date-fns'
 import NextLink from 'next/link'
 
 const NotesGrid = (props) => {
-  return <Flex wrap="wrap" flexDirection="row" justify="center">
+  return <SimpleGrid columns={[1, 2, 3, 4]} spacing={4}>
     {props.notes.map((note) => (
       <NextLink key={note.id} href="/notes/[noteId]" as={`/notes/${note.id}`}>
-        <PseudoBox cursor="pointer" m={2} borderWidth="1px" borderRadius="10px" p={2} _hover={{boxShadow:"md", borderColor:"#c9d7f2" }} _active={{ bg: "#ebebeb" }}>
+        <PseudoBox cursor="pointer" bg="white" m={2} boxShadow="2px 5px 5px #ddd" borderWidth="1px" borderRadius="2px" p={2} _hover={{boxShadow:"2px 8px 5px #ddd", borderColor:"#c9d7f2" }} _active={{ bg: "#ebebeb" }}>
         <Flex w="200px" direction="column" align="center">
           <Text as="b" isTruncated>
             {note.title}
@@ -29,9 +29,9 @@ const NotesGrid = (props) => {
         </PseudoBox>
       </NextLink>
     ))}
-    <Link href="/newnote">
-      <PseudoBox cursor="pointer" bg="#ededed" m={2} mb={8} borderWidth="1px" borderRadius="10px" p={2} _hover={{boxShadow:"md", borderColor:"#c9d7f2" }} _active={{ bg: "#ebebeb" }}>
-        <Flex align="center" w="200px" h="120px" justify="center"  >
+   <NextLink  href="/newnote">
+        <PseudoBox cursor="pointer" bg="white" m={2} boxShadow="2px 5px 5px #ddd" borderWidth="1px" borderRadius="2px" p={2} _hover={{boxShadow:"2px 8px 5px #ddd", borderColor:"#c9d7f2" }} _active={{ bg: "#ebebeb" }}>
+          <Flex py="5vh" justify="center">
             <Icon
               name="add"
               size="50px"
@@ -39,8 +39,8 @@ const NotesGrid = (props) => {
             />
         </Flex>
       </PseudoBox>
-    </Link>
-  </Flex>
+    </NextLink>
+  </SimpleGrid>
 }
 
 export default NotesGrid;

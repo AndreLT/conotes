@@ -10,13 +10,15 @@ import UserNotes from './usernotes'
 const Home = () => {
   const auth = useAuth();
   
-  return <div>
+  return <>
     {auth.user ?
-      <UserNotes />
+      <Menu>
+        <UserNotes user={auth.user} />
+      </Menu>
       :
       <Authentication />
     }
-  </div>
+  </>
 }
 
 export default Home

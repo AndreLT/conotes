@@ -15,7 +15,7 @@ const Authentication = () => {
   const onSubmit = (data, e) => {
     setIssubmiting(true)
     if(signupvisible){
-      auth.signup(data.email, data.password, data.nickname,)
+      auth.signup(data.email, data.password, data.nickname)
     } else {
       auth.signin(data.email, data.password)
     }
@@ -87,6 +87,7 @@ const Authentication = () => {
                     })}
                   isInvalid={watchPass != watchConfirm}
                   errorBorderColor="red.300"
+                  mb={4}
                 />
                 <Input 
                   name="nickname" 

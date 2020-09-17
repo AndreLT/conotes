@@ -14,19 +14,34 @@ import {
   Skeleton
 } from '@chakra-ui/core'
 import Router from 'next/router';
+import {mutate} from 'swr'
 
+import useLocalStorage from '../utils/uselocalstorage'
 import {createNote} from '../lib/firestore'
 import Renderednote from '../components/renderednote'
 import {useAuth} from '../lib/auth'
 import Menu from '../components/menu'
-import {mutate} from 'swr'
 
 const NewNote = () => {
+
+  const [author, setAuthor] = useLocalStorage('author', null)
+  const [title, setTitle] = useLocalStorage('title', "")
+  const [cues, setCues] = useLocalStorage('cues', "")
+  const [notes, setNotes] = useLocalStorage('notes', "")
+  const [summary, setSummary] = useLocalStorage('summary',"")
+  const [rendered, setRendered] = useState(false)
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const auth = useAuth((auth) => {
+    setAuthor(auth.user.displayName)
+    return auth
+  });
   
-  const auth = useAuth();
+  const date = new Intl.DateTimeFormat('en',{year: 'numeric', month: 'long', day: 'numeric'}).format(new Date());
 
   const toast = useToast();
-  
+
   const pushNote = () => {
     let data = {
       userId: auth.user.uid,
@@ -37,7 +52,7 @@ const NewNote = () => {
       notes: notes, 
       summary: summary
     }
-    
+
     createNote(data)
     .then(
       toast({
@@ -50,7 +65,7 @@ const NewNote = () => {
       ['author','title','cues','notes','summary']
         .forEach((key) => localStorage.removeItem(key)),
       mutate('/api/notes'),
-      Router.push('/usernotes')
+      Router.push('/')
     )
     .catch((error) => {
       toast({
@@ -64,18 +79,8 @@ const NewNote = () => {
     })
   }
 
-  const [author, setAuthor] = useLocalStorage('author', auth?.user?.displayName)
-  const [title, setTitle] = useLocalStorage('title', "")
-  const [cues, setCues] = useLocalStorage('cues', "")
-  const [notes, setNotes] = useLocalStorage('notes', "")
-  const [summary, setSummary] = useLocalStorage('summary',"")
-  const [rendered, setRendered] = useState(false)
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const date = new Intl.DateTimeFormat('en',{year: 'numeric', month: 'long', day: 'numeric'}).format(new Date());
 
-  
   return <Menu>
     <Flex direction="column" align="center" justify="center">
       <Box w="80%" maxW="800px" p={5} borderWidth="1px" borderColor="grey.300" rounded="10px">
@@ -97,27 +102,27 @@ const NewNote = () => {
               <Text>{date}</Text>
               <Flex direction='row'>
                 <Text mr={2}>Author:</Text>
-                {auth?.user?.displayName ?
-                  <Editable 
-                    value={author}
-                    name='author'
-                    onChange={(e) => {
-                      localStorage.setItem('author', e);
-                      setAuthor(e);
-                      }
+                {auth?.user ?
+                <Editable 
+                  value={author}
+                  name='author'
+                  onChange={(e) => {
+                    localStorage.setItem('author', e);
+                    setAuthor(e);
                     }
-                    defaultValue={auth?.user?.displayName}
-                  >
+                  }
+                  defaultValue={auth.user.displayName}
+                >
                     <EditablePreview borderWidth="1px" borderRadius={5}>
                       {auth.user.displayName}
                     </EditablePreview>
-                  
-                    <EditableInput/>
-                  </Editable>
-                  :<Skeleton>
-                    <Text>Username</Text>
-                  </Skeleton>
-                }
+
+                  <EditableInput/>
+                </Editable>
+
+                :<Skeleton>
+                  <Text>Loading</Text>
+                </Skeleton>}  
               </Flex>
             </Flex>
 
@@ -175,42 +180,15 @@ const NewNote = () => {
       </Box>
 
       <Stack mt={2}isInline>
-        <Button onClick={() => setRendered(true)}>Render</Button>
+        <Button onClick={() => setRendered(true)} isLoading={!auth?.user}>Render</Button>
         <Button onClick={() => {
           setIsSubmitting(true)
           pushNote()
-        }} isDisabled={isSubmitting}>Save Note</Button>
+        }} isLoading={!auth?.user} isDisabled={isSubmitting}>Save Note</Button>
       </Stack>
 
     </Flex>
   </Menu>
-}
-
-const useLocalStorage = (key, initialValue) => {
-
-  const [storedValue, setStoredValue] = useState(() => {
-    try {
-      const item = typeof window !== 'undefined' ? window.localStorage.getItem(key) : false;
-      return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      console.log(error);
-      return initialValue;
-    }
-
-  });
-
-  const setValue = value => {
-
-    try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return [storedValue, setValue];
 }
 
 export default NewNote;
