@@ -15,7 +15,7 @@ const UserNotes = () => {
 
   const [fetchLimit, setFetchLimit] = useLocalStorage('fetchLimit', 8)
 
-  const { data, error } = useSWR([`/api/notes?limit=${fetchLimit}`, user.token], fetcher)
+  const { data, error } = useSWR([`/api/notes?limit=${fetchLimit}`, user ? user.token : null], fetcher)
  
   if(!data?.notes){
     return(
