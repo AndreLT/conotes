@@ -21,14 +21,14 @@ const UserProfile = ({ user }) => {
     <Flex align="center" w="90vw" margin={4} direction="row" justify="space-evenly">
       <Box color="white">
         <Heading size="md">
-          {user.displayName}
+          {user?.displayName}
           <IconButton variant="link" outline="none" size="lg" icon="edit" color="white" onClick={() => console.log("updating username")}/>
         </Heading>
-        <Text mt={2} ml={1}>{user.email}</Text>
+        <Text mt={2} ml={1}>{user?.email}</Text>
       </Box>
       <Divider h="13vh" orientation="vertical" borderColor="white" />
       <Box>
-        <Heading color="white">{user.notes}</Heading>
+        <Heading color="white">{user?.notes}</Heading>
         <Text color="white"> Notes </Text>
       </Box>
       <Divider h="13vh" orientation="vertical" borderColor="white" />
