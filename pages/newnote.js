@@ -33,10 +33,14 @@ const NewNote = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+<<<<<<< Updated upstream
   const auth = useAuth((auth) => {
     setAuthor(auth.user.displayName)
     return auth
   });
+=======
+  const auth = useAuth();
+>>>>>>> Stashed changes
   
   const date = new Intl.DateTimeFormat('en',{year: 'numeric', month: 'long', day: 'numeric'}).format(new Date());
 
@@ -53,7 +57,11 @@ const NewNote = () => {
       summary: summary
     }
 
+<<<<<<< Updated upstream
     createNote(data)
+=======
+    mutate('/api/notes', createNote(data))
+>>>>>>> Stashed changes
     .then(
       toast({
         title: "Note Created.",
@@ -64,7 +72,11 @@ const NewNote = () => {
       }),
       ['author','title','cues','notes','summary']
         .forEach((key) => localStorage.removeItem(key)),
+<<<<<<< Updated upstream
       mutate('/api/notes'),
+=======
+      auth.user.notes++,
+>>>>>>> Stashed changes
       Router.push('/')
     )
     .catch((error) => {
@@ -111,11 +123,22 @@ const NewNote = () => {
                     setAuthor(e);
                     }
                   }
+<<<<<<< Updated upstream
                   defaultValue={auth.user.displayName}
                 >
                     <EditablePreview borderWidth="1px" borderRadius={5}>
                       {auth.user.displayName}
                     </EditablePreview>
+=======
+                  defaultValue={() => {
+                    setAuthor(auth.user.displayName);
+                    return auth.user.displayName;
+                  }}
+                >
+                  <EditablePreview borderWidth="1px" borderRadius={5}>
+                    {auth.user.displayName}
+                  </EditablePreview>
+>>>>>>> Stashed changes
 
                   <EditableInput/>
                 </Editable>
