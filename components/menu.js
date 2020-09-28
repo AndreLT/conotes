@@ -25,66 +25,6 @@ const Menu = ({ children }) => {
   const [singoutpop, setSignoutpop] = useState(false);
 
   const windowsize = useWindowsize();
-<<<<<<< Updated upstream
-  return (
-    <Flex direction="column" bg="#f7f7f7" minH="100vh">
-      <Flex direction="row" bg="white" borderColor="grey.200" boxShadow="0 3px 30px #ddd">
-        <Box minW="140px" bg="blue.300" py={4} px={8}>
-          <Text color="white">Co-Notes</Text>
-        </Box>
-        {(windowsize.width < 570) ?
-          <Flex w="100%" justify="flex-end" align="center" m={2}>
-            <MenuDrawer />
-          </Flex>
-          : <Flex justify="space-between" w="100%">
-            <Box>
-              <Link href="/" passHref>
-                <PseudoBox
-                  as="button"
-                  cursor="pointer"
-                  fontWeight="semibold"
-                  px={4}
-                  py={4}
-                  mx={2}
-                  ml={8}
-                  bg="white"
-                  _hover={{ bg: "#f2f7ff" }}
-                >
-                  Your Notes
-              </PseudoBox>
-              </Link>
-              <Link href="/newnote" passHref>
-                <PseudoBox
-                  as="button"
-                  cursor="pointer"
-                  fontWeight="semibold"
-                  px={4}
-                  py={4}
-                  mx={2}
-                  ml={8}
-                  bg="#deebff"
-                  _hover={{ bg: "#adceff" }}
-                >
-                  + New Note
-              </PseudoBox>
-              </Link>
-            </Box>
-
-            <Flex direction='row' align='center'>
-              <Text>Signed in as {auth?.user?.displayName}</Text>
-              <Button onClick={() => auth.signout()} m={2}>Sign Out</Button>
-            </Flex>
-          </Flex>
-        }
-      </Flex>
-      <Flex justify="center" >
-        <Box w={["100%", "90%", "80%", "70%", "60%"]} mt={4}>
-          {children}
-        </Box>
-      </Flex>
-    
-    </Flex>
-=======
   return ( 
     <>
       <Flex direction="column" bg="#f7f7f7" minH="100vh">
@@ -178,7 +118,6 @@ const Menu = ({ children }) => {
         </Flex>}
       </Flex>
     </>
->>>>>>> Stashed changes
   )
 
 }

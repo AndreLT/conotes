@@ -5,14 +5,6 @@ import {
   Divider, 
   Flex, 
   Heading, 
-<<<<<<< Updated upstream
-  List, 
-  ListItem,
-  Stack,
-  Text
-} from "@chakra-ui/core";
-import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
-=======
   IconButton,
   List, 
   ListItem,
@@ -24,7 +16,6 @@ import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { GrDocumentPdf } from "react-icons/gr";
 import { FaFilePdf } from "react-icons/fa";
->>>>>>> Stashed changes
 
 import PdfGen from './pdfgen';
 
@@ -42,11 +33,7 @@ const Renderednote = (props) => {
             notes = {props.notes}
             summary = {props.summary}
             date = {props.date}
-<<<<<<< Updated upstream
-            autho = {props.author}
-=======
             author = {props.author}
->>>>>>> Stashed changes
             />
         </PDFViewer>  
         <Button onClick={() => setPreview(false)}>Close</Button>
@@ -55,9 +42,6 @@ const Renderednote = (props) => {
   }
   return (
     <>
-<<<<<<< Updated upstream
-      <Flex direction="column" align="center" justify="center" p={5} w="full">
-=======
       <Flex pt={2} pb={1} borderWidth="1px" align="center" justify="space-between" borderTopRightRadius={10} borderTopLeftRadius={10} borderBottomWidth="0" w="full" bg="white" direction="row">
         
         <Box display="flex" mx={4} alignItems="center" flexDirection="row">
@@ -88,7 +72,6 @@ const Renderednote = (props) => {
 
       <Flex  borderWidth="1px" direction="column" align="center" justify="center" p={5} w="full">
         
->>>>>>> Stashed changes
         <Heading mb={5}>{props.title}</Heading>
 
         <Stack w="95%" minH="500px" isInline>
@@ -116,21 +99,6 @@ const Renderednote = (props) => {
           <Text fontSize={["14px","16px","18px", "20px"]} p={2}>{props.summary}</Text>
         </Box>
 
-<<<<<<< Updated upstream
-        <PDFDownloadLink document={
-          <PdfGen 
-            title = {props.title}
-            cues = {props.cues}
-            notes = {props.notes}
-            summary = {props.summary}
-            date = {props.date}
-            author = {props.author}
-          />} fileName={`${props.title.replace(/[\W]/g,'')}.pdf`}>
-          {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
-        </PDFDownloadLink>
-        <Button onClick={() => setPreview(true)}>Preview</Button>
-=======
->>>>>>> Stashed changes
       </Flex> 
     </>
   );

@@ -11,13 +11,7 @@ const Home = () => {
   
   return <>
     {auth.user ?
-<<<<<<< Updated upstream
-      <Menu>
-        <UserNotes user={auth.user} />
-      </Menu>
-=======
       <UserNotes user={auth.user} />
->>>>>>> Stashed changes
       :
       <Authentication />
     }

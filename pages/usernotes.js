@@ -13,33 +13,20 @@ const UserNotes = () => {
 
   const {user} = useAuth();
 
-<<<<<<< Updated upstream
-  const [fetchLimit, setFetchLimit] = useLocalStorage('fetchLimit', 5)
-
-  const { data, error } = useSWR([`/api/notes?limit=${fetchLimit}`, user.token], fetcher)
- 
-  if(!data){
-=======
   const [fetchLimit, setFetchLimit] = useLocalStorage('fetchLimit', 8)
 
   const { data, error } = useSWR([`/api/notes?limit=${fetchLimit}`, user.token], fetcher)
  
   if(!data?.notes){
->>>>>>> Stashed changes
     return(
         <Spinner/>
     )
   }
 
   return (
-<<<<<<< Updated upstream
-      data.notes.length ?
-        <Pagination color='gray.500'  limit={fetchLimit} notes={data.notes} />
-=======
     <Menu>
       {data.notes.length ?
         <Pagination limit={fetchLimit} notes={data.notes} />
->>>>>>> Stashed changes
         :
         <Flex direction='column' padding={10} boxShadow="2px 2px 6px #cccccc" align='center'>
           <Text fontSize="2xl" fontWeight='bold'>You dont have any notes yet :'(</Text>
@@ -62,12 +49,8 @@ const UserNotes = () => {
             </PseudoBox>
           </Link>
         </Flex>
-<<<<<<< Updated upstream
-      
-=======
       }
     </Menu>  
->>>>>>> Stashed changes
   )
 }
 
