@@ -16,13 +16,17 @@ const NotePage = () => {
     const noteId = noteAndRoute.noteId;
 
     const { data } = useSWR( user ? [`/api/note/${noteId}`, user.token] : null, fetcher)
-    const note = data?.note;
+
     if(!data){
         return <Text> Loading... </Text>
     }
-    console.log(note)
+
+    const {createdAt, ...note} = data.note;
+    const date = format(parseISO(createdAt), 'MMMM dd yyyy');
+    const treatednote = {date: date, ...note}
+    
     return <Menu>
-            <Renderednote title={note.title} cues={note.cues} notes={note.notes} summary={note.summary} date={format(parseISO(note.createdAt), 'kk:mm - dd MMM yyyy')}/>
+            <Renderednote {...treatednote}/>
         </Menu>
 
 }

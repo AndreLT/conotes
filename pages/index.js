@@ -3,20 +3,19 @@ import useSWR from 'swr'
 
 import {useAuth} from '../lib/auth'
 import Authentication from '../components/authentication'
-import Menu from '../components/menu'
 import UserNotes from './usernotes'
 
 
 const Home = () => {
   const auth = useAuth();
   
-  return <div>
+  return <>
     {auth.user ?
-      <UserNotes />
+      <UserNotes user={auth.user} />
       :
       <Authentication />
     }
-  </div>
+  </>
 }
 
 export default Home
