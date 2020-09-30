@@ -7,7 +7,7 @@ import {
 	Spinner,
 	Text,
 	IconButton,
-	Select
+	Select, PseudoBox
 } from '@chakra-ui/core';
 import { mutate } from 'swr';
 
@@ -77,7 +77,18 @@ const Pagination = (props) => {
 		<Flex align="center" justify="center" direction='column'>
 			<Flex direction="column">
 				<Flex w="full" justify="space-between">
-					<Text alignSelf="center">You have: {user.notes} notes</Text>
+					<PseudoBox 
+						py={2} 
+						px={4} 
+						backgroundColor="#999" 
+						color="white" 
+						borderRadius={15} 
+						boxShadow="1px 2px 3px #aaa"
+					>
+						<Text fontWeight="bold" alignSelf="center">You have: {user.notes} notes</Text>
+					</PseudoBox>
+					<Flex direction="row" align="center">
+					<Text mr={4}>Notes per page: </Text>
 					<Select w="100px" onChange={(e) => handleLimitChange(e.target.value)} placeholder={fetchLimit}>
 						<option value="8">8</option>
 						<option value="12">12</option>
@@ -87,6 +98,7 @@ const Pagination = (props) => {
 						<option value="28">28</option>
 						<option value="32">32</option>
 					</Select>
+					</Flex>
 				</Flex>
 				<NotesGrid isFirst={pageIndex == 0} notes={calcNoteSplit()} />
         <Box display="flex" alignItems="center" flexDirection="column" flexFlow="column wrap">

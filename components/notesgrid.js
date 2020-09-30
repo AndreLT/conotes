@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { 
+import {
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
@@ -16,12 +16,12 @@ import {
 } from "@chakra-ui/core";
 import { format, parseISO } from 'date-fns'
 import styled from '@emotion/styled'
-import {mutate} from 'swr'
+import { mutate } from 'swr'
 import NextLink from 'next/link'
 import { jsx, css, keyframes } from '@emotion/core'
 
-import {deleteNote} from '../lib/firestore'
-import {useAuth} from '../lib/auth'
+import { deleteNote } from '../lib/firestore'
+import { useAuth } from '../lib/auth'
 
 const NotesGrid = (props) => {
 
@@ -36,7 +36,7 @@ const NotesGrid = (props) => {
   const onClose = () => setIsOpen(false);
   const onDelete = () => {
     deleteNote(deletee);
-    auth.updateLocalInfo({notes: auth.user.notes + 1})
+    auth.updateLocalInfo({ notes: auth.user.notes + 1 })
     onClose();
   }
 
@@ -50,30 +50,30 @@ const NotesGrid = (props) => {
     }
   `
 
-  const DelButton = styled.div `
+  const DelButton = styled.div`
     z-index: -1;
     position: absolute;
     animation: ${bounce} 0.1s cubic-bezier(0.1, 0.8, 0.9, 1.0);
   `
 
   return <Flex justify="center">
-    <SimpleGrid columns={[1, 2, 3, 4]} spacing={8}> 
-      {props.isFirst && 
-        <NextLink position="absolute" href="/newnote">
-          <PseudoBox 
-            bg="rgba(180,180,180,.2)" 
-            borderRadius="1px" 
-            borderWidth="1px" 
+    <SimpleGrid columns={[1, 2, 3, 4]} spacing={8}>
+      {props.isFirst &&
+        <NextLink href="/newnote">
+          <PseudoBox
+            bg="rgba(180,180,180,.2)"
+            borderRadius="1px"
+            borderWidth="1px"
             borderColor="#f7f7f7"
-            boxShadow="4px 4px 15px 4px #ccc inset" 
+            boxShadow="4px 4px 15px 4px #ccc inset"
             cursor="pointer"
-            minH="30vh" 
+            minH="260px"
             mt={6}
-            p={2} 
-            transition="box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out" 
+            p={2}
+            transition="box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out"
             _active={{ bg: "#ebebeb" }}
-            _hover={{boxShadow:"0 0 0 #ddd inset", borderColor:"#c9d7f2" }} 
-          > 
+            _hover={{ boxShadow: "0 0 0 #ddd inset", borderColor: "#c9d7f2" }}
+          >
             <Flex h="100%" py="5vh" align="center" justify="center">
               <Icon
                 name="add"
@@ -84,39 +84,39 @@ const NotesGrid = (props) => {
           </PseudoBox>
         </NextLink>
       }
-      
-      {props.notes.map((note) => (
-        <PseudoBox mt={2} zIndex="1" onMouseOver={()=> setMouseOver(note.id)} cursor="pointer">
 
-          {mouseOver == note.id && 
+      {props.notes.map((note) => (
+        <PseudoBox key={note.id} mt={2} zIndex="1" onMouseOver={() => setMouseOver(note.id)} cursor="pointer">
+
+          {mouseOver == note.id &&
             <DelButton>
-              <PseudoBox  p={1} pb={1} mt={-5} borderRadius={8} onClick={() => {setIsOpen(true); setDeletee(note.id)}}>
-                <Icon size="20px" name="delete" color="red.400"  />
+              <PseudoBox p={1} pb={1} mt={-5} borderRadius={8} onClick={() => { setIsOpen(true); setDeletee(note.id) }}>
+                <Icon size="20px" name="delete" color="red.400" />
               </PseudoBox>
             </DelButton>
           }
 
           <NextLink key={note.id} href="/notes/[noteId]" as={`/notes/${note.id}`}>
-            <PseudoBox 
-              minH="30vh" 
-              mt={4} 
+            <PseudoBox
+              minH="260px"
+              mt={4}
               w="210px"
-              bg="#f7f7f7" 
-              boxShadow="5px 5px 15px 4px #ddd" 
-              borderWidth="1px" 
-              borderRadius="2px" 
-              p={2} 
-              transition="box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out" 
-              _hover={{boxShadow:"5px 5px 10px #ccc", backgroundColor:"#dbe9ff", borderColor:"#c9d7f2" }} 
+              bg="#f7f7f7"
+              boxShadow="5px 5px 15px 4px #ddd"
+              borderWidth="1px"
+              borderRadius="2px"
+              p={2}
+              transition="box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out"
+              _hover={{ boxShadow: "5px 5px 10px #ccc", backgroundColor: "#dbe9ff", borderColor: "#c9d7f2" }}
               _active={{ bg: "#ebebeb" }}
-            >              
-              <Flex bg="white" borderWidth="1px" minH="30vh" direction="column" justify="space-between" align="center">
-                
-                <Flex alignItems="center" textAlign="center" m={1} boxShadow="0 4px 7px -2px #ccc" h="7vh" w="100%">
+            >
+              <Flex bg="white" borderWidth="1px" minH="250px" direction="column" justify="space-between" align="center">
+
+                <Flex alignItems="center" textAlign="center" m={1} boxShadow="0 4px 7px -2px #ccc" h="65px" w="100%">
                   <Text w="100%" mx={1} overflow="hidden">
                     {(note.title.length > 30) ?
-                      note.title.slice(0,30) + '...'
-                      :note.title
+                      note.title.slice(0, 30) + '...'
+                      : note.title
                     }
                   </Text>
                 </Flex>
@@ -124,8 +124,8 @@ const NotesGrid = (props) => {
                 <Box flexGrow="2" mt={2} justifySelf="flex-start" w="90%" h="70px">
                   <Text overflow="hidden">
                     {(note.notes.length > 100) ?
-                      note.notes.slice(0,100) + '...'
-                    :note.notes
+                      note.notes.slice(0, 100) + '...'
+                      : note.notes
                     }
                   </Text>
                 </Box>
@@ -144,7 +144,7 @@ const NotesGrid = (props) => {
       ))}
 
       <AlertDialog
-        isOpen={isOpen}     
+        isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
       >
@@ -163,7 +163,7 @@ const NotesGrid = (props) => {
             <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button variantColor="red" ml={3} onClick={() => onDelete()} 
+            <Button variantColor="red" ml={3} onClick={() => onDelete()}
             >
               Delete
             </Button>
