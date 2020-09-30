@@ -22,7 +22,6 @@ const Menu = ({ children }) => {
   
 
   const [profileVisible, setProfileVisible] = useState(false);
-  const [singoutpop, setSignoutpop] = useState(false);
 
   const windowsize = useWindowsize();
   return ( 
@@ -52,40 +51,50 @@ const Menu = ({ children }) => {
                   <PseudoBox
                     as="button"
                     cursor="pointer"
-                    fontWeight="semibold"
+                    fontWeight="bold"
                     color="white"
+                    borderRadius="50px"
+                    boxShadow=  "0 0 0 rgba(51,118,157,0), 0 0 0 rgba(68,157,209,0)"
                     px={4}
-                    py={4}
-                    mx={2}
-                    ml={8}
-                    _hover={{ bg: "#DDFFF7", color:"#273043" }}
+                    py={3}
+                    mx={3}
+                    my={2}
+                    ml={3}
+                    transition="box-shadow 0.2s ease-in-out"
+                    _hover={{ 
+                      boxShadow:"3px 3px 9px rgba(51,118,157,.6), -4px -4px 5px #4AAAE3"
+                    }}
                   >
-                    <Text fontWeigh={15}>Your Notes</Text>
+                    <Text>Your Notes</Text>
                 </PseudoBox>
                 </Link>
                 <Link href="/newnote" passHref>
-                  <PseudoBox
+                <PseudoBox
                     as="button"
                     cursor="pointer"
-                    fontWeight="semibold"
+                    fontWeight="bold"
                     color="white"
+                    borderRadius="50px"
+                    boxShadow=  "0 0 0 rgba(51,118,157,0), 0 0 0 rgba(68,157,209,0)"
                     px={4}
-                    py={4}
-                    mx={2}
+                    py={3}
+                    mx={3}
+                    my={2}
                     ml={8}
-                    _hover={{ bg: "#DDFFF7", color:"#273043" }}
+                    transition="box-shadow 0.2s ease-in-out"
+                    _hover={{ 
+                      boxShadow:"3px 3px 9px rgba(51,118,157,.6), -3px -3px 8px #4AAAE3"
+                    }}
                   >
-                    <Text>
-                      + New Note
-                    </Text>
+                    <Text>+ New Note</Text>
                 </PseudoBox>
                 </Link>
               </Box>
 
               <Flex direction='row' align='center' mr={4}>
-                <Flex direction="row" alignItems="center">
+                <Flex direction="row" alignItems="center" mr={5}>
                   <Text color="white" fontWeight="bold" mr={1}>Signed in as {auth?.user?.displayName}</Text>
-                  <IconButton icon="settings" mr={4} color="white" size="md" variant="ghost" onClick={() => setProfileVisible(!profileVisible)}/>
+                  <IconButton icon="settings" mr={2} color="white" size="md" variant="ghost" onClick={() => setProfileVisible(!profileVisible)}/>
                 </Flex>
                 <PopoverSingout>
                   <PseudoBox
