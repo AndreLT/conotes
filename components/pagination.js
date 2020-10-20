@@ -16,17 +16,21 @@ import { useAuth } from '../lib/auth';
 import fetcher from '../utils/fetcher'
 import NotesGrid from './notesgrid'
 import useLocalStorage from '../utils/uselocalstorage';
+import { max } from 'date-fns';
+import useWindowSize from '../utils/windowsize'
 
 const Pagination = (props) => {
+
+	const { user } = useAuth();
+
+	const windowSize = useWindowSize();
 
 	const [pageIndex, setPageIndex] = useState(0);
 	const [loadedindex, setLoadedindex] = useState(0);
 	const [notes, setNotes] = useState(props.notes);
 	const [isLoading, setIsLoading] = useState(false);
 	const [fetchLimit, setFetchLimit] = useLocalStorage('fetchLimit', props.limit)
-	const [isLast, setIsLast] = useState(null);
-
-	const { user } = useAuth();
+	const [isLast, setIsLast] = useState(fetchLimit > user?.notes);
 
 	const handlePagination = (index) => {
 		setPageIndex(pageIndex + index)
@@ -42,6 +46,8 @@ const Pagination = (props) => {
 			})
 		}
 		setIsLast(pageIndex + index == Math.ceil(user.notes / fetchLimit) - 1)
+		if(pageIndex < pageIndex + index)
+			scroll(0,0);
 	}
 
 	const calcNoteSplit = () => {
@@ -76,11 +82,12 @@ const Pagination = (props) => {
 	return (
 		<Flex align="center" justify="center" direction='column'>
 			<Flex direction="column">
-				<Flex w="full" justify="space-between">
+				<Flex w="full" flexWrap="wrap" direction={windowSize.width < 700 ? "column" : "row"} align="center" justify="space-between">
 					<PseudoBox 
 						py={2} 
 						px={4} 
 						backgroundColor="#999" 
+						mb={2}
 						color="white" 
 						borderRadius={15} 
 						boxShadow="1px 2px 3px #aaa"
@@ -88,21 +95,21 @@ const Pagination = (props) => {
 						<Text fontWeight="bold" alignSelf="center">You have: {user.notes} notes</Text>
 					</PseudoBox>
 					<Flex direction="row" align="center">
-					<Text mr={4}>Notes per page: </Text>
-					<Select w="100px" onChange={(e) => handleLimitChange(e.target.value)} placeholder={fetchLimit}>
-						<option value="8">8</option>
-						<option value="12">12</option>
-						<option value="16">16</option>
-						<option value="20">20</option>
-						<option value="24">24</option>
-						<option value="28">28</option>
-						<option value="32">32</option>
-					</Select>
+						<Text mr={4}>Notes per page: </Text>
+						<Select w="100px" onChange={(e) => handleLimitChange(e.target.value)} placeholder={fetchLimit}>
+							<option value="8">8</option>
+							<option value="12">12</option>
+							<option value="16">16</option>
+							<option value="20">20</option>
+							<option value="24">24</option>
+							<option value="28">28</option>
+							<option value="32">32</option>
+						</Select>
 					</Flex>
 				</Flex>
 				<NotesGrid isFirst={pageIndex == 0} notes={calcNoteSplit()} />
         <Box display="flex" alignItems="center" flexDirection="column" flexFlow="column wrap">
-          <Text mt={4} color="#777777">{pageIndex * fetchLimit} - {isLast ? user.notes : pageIndex * fetchLimit + parseInt(fetchLimit)}</Text>
+          <Text mt={4} color="#777777">{pageIndex * fetchLimit} - {isLast ? user.notes : (pageIndex * fetchLimit + parseInt(fetchLimit))}</Text>
           <Flex mb={5} wrap="wrap" justify="center" align="center" borderRadius={20} boxShadow="0 5px 5px #ddd" bg="#f7f7f7">
             <IconButton variant="ghost" borderTopLeftRadius={20} borderBottomLeftRadius={20} icon="chevron-left" onClick={() => handlePagination(-1)} isDisabled={pageIndex === 0} />
               {pages}

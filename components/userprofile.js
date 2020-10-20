@@ -30,19 +30,29 @@ import {useAuth} from '../lib/auth'
 import PopoverSignout from '../utils/popoversignout'
 import {deleteUser} from '../lib/firestore'
 
-const UserProfile = ({ user }) => {
+const UserProfile = (props) => {
 
   const auth = useAuth();
   
   //Signout popover consts
   const initialFocusRef = useRef();
-  const [newName, setNewName] = useState(null);
+  const [newName, setNewName] = useState("");
   const toast = useToast();
 
   //Account Delete Consts
-  const [isOpen, setIsOpen] = React.useState();
+  const [isOpen, setIsOpen] = useState();
   const onClose = () => setIsOpen(false);
-  const cancelRef = React.useRef();
+  const cancelRef = useRef();
+  const [finalAlert, setFinalAlert] = useState(false);
+
+  const fontColor = props.menu == "standart" ? "white" : "black"
+
+  const menuDivider = () => {
+    if(props.menu == "standart")
+      return <Divider h="13vh" orientation="vertical" borderColor="white" />
+
+    return <Divider orientation="horizontal" my={4} w="100%" borderColor="black" />
+  }
 
   const popRename = (props) => {
     return (<Popover
@@ -69,9 +79,9 @@ const UserProfile = ({ user }) => {
             <PopoverBody>
               <Text>How do you want to be called?</Text>
               <Input 
-                placeholder={user?.displayName}
+                placeholder={auth?.user?.displayName}
                 value={newName}
-                onChange={(e)=> {setNewName(e.target.value), console.log(e.target.value)}}
+                onChange={(e)=> setNewName(e.target.value)}
               />
             </PopoverBody>
             <PopoverFooter>
@@ -107,8 +117,6 @@ const UserProfile = ({ user }) => {
   }
 
   const alertDelete = () => {
-
-
     return(
       <>
       <Button color="#dF041D" variant="link" onClick={() => setIsOpen(true)}>Delete Account</Button>
@@ -125,16 +133,24 @@ const UserProfile = ({ user }) => {
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            Are you sure? You can't undo this action afterwards.
+            {finalAlert ? 
+              "All your notes will be deleted with your account and cannot be restored \n Do you want to proceed?"
+              :"Are you sure? You can't undo this action afterwards."
+            }
           </AlertDialogBody>
 
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
+            <Button ref={cancelRef} onClick={() => setFinalAlert(false), onClose}>
               Cancel
             </Button>
-            <Button variantColor="red"  ml={3} onClick={() => deleteUser(user.uid).then(console.log("account deleted")).catch((error) => {console.log(error)})}>
-              Delete
-            </Button>
+            {finalAlert ?
+              <Button variantColor="red"  ml={3} onClick={() => deleteUser(auth.user.uid)}>
+                Delete
+              </Button>
+              :<Button variantColor="red"  ml={3} onClick={() => setFinalAlert(true)}>
+                Yes
+              </Button>
+            }
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -142,31 +158,53 @@ const UserProfile = ({ user }) => {
     );
   }
 
+  const resetEmail = (email) => {
+    resetPassword(email)
+    .then((response) => {
+      toast({
+        title: "Success.",
+        description: `The link to reset your password has been sent to ${email}`,
+        status: "success",
+        duration: 5000,
+        isClosable: true
+      })
+    }).catch((error) => {
+      toast({
+      title: "Failed",
+      description: "There was a problem sending a reset email, try again later.",
+      status: "error",
+      duration: 5000,
+      isClosable: true
+      }),
+      console.log(error)
+    })
+  }
+
   return (
-    <Flex align="center" w="77vw" margin={4} direction="row" justify="space-between">
-      <Box color="white">
+    <Flex align="center" w={props.menu == "drawer" ? "20vh" : "77vh"} color={fontColor} margin={4} direction={props.menu == "drawer" ? "column" : "row"} justify="space-between">
+      <Box color={fontColor}>
         <Flex direction="row">
           <Heading size="md">
-            {user?.displayName}
+            {auth?.user?.displayName}
           </Heading>
-          {popRename(<IconButton variant="link" outline="none" size="lg" icon="edit" color="white"/>)}
+          {popRename(<IconButton variant="link" outline="none" size="lg" icon="edit" color={fontColor}/>)}
         </Flex>
-        <Text mt={2} ml={1}>{user?.email}</Text>
+        <Text mt={2} ml={1}>{auth?.user?.email}</Text>
       </Box>
-      <Divider h="13vh" orientation="vertical" borderColor="white" />
+      {menuDivider()}
       <Flex direction="column" align="center">
-        <Heading color="white">{user?.notes}</Heading>
-        <Text color="white"> Your Notes </Text>
+        <Heading color={fontColor}>{auth?.user?.notes}</Heading>
+        <Text color={fontColor}> Your Notes </Text>
       </Flex>
-      <Divider h="13vh" orientation="vertical" borderColor="white" />
-      <Flex  align="flex-end" direction="column">
+      {menuDivider()}
+      <Flex  align={props.menu == "standart" ? "flex-end" : "flex-start"} direction="column">
 
-          <Button mb={2} color="white" variant="link">Reset Password</Button>
+          <Button mb={2} color={fontColor} variant="link" onClick={()=> auth.resetEmail(auth?.user?.email)}>Reset Password</Button>
 
-          {popRename(<Button mb={2} color="white" variant="link">Edit Profile Name</Button>)}
+          {popRename(<Button mb={2} color={fontColor} variant="link">Edit Profile Name</Button>)}
           
           <PopoverSignout>
-            <Button mb={2} color="white" variant="link">Sign Out</Button>
+            <Button mb={2} color={fontColor} variant="link">Sign Out</Button>
           </PopoverSignout>
 
           {alertDelete()}

@@ -19,6 +19,8 @@ const Authentication = () => {
     } else {
       auth.signin(data.email, data.password)
     }
+    
+    setIssubmiting(false)
   }
 
   const [signupvisible, setSignupvisible] = useState(false);
